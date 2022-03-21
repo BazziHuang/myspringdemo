@@ -1,0 +1,1 @@
+web: java -jar target/myspringdemo-0.0.1-SNAPSHOT.war
