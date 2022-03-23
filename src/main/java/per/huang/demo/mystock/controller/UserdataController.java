@@ -18,7 +18,7 @@ public class UserdataController {
 	
 	@GetMapping("/")
     private String index(){
-        return "index.jsp";
+        return "index";
     }
 
     @GetMapping("/test/userdata")
