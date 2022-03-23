@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import per.huang.demo.mystock.repository.UserdataDao;
 
 @Controller
-public class HelloController {
+public class UserdataController {
 
     @Autowired
     UserdataDao userdataDao;
 	
 	@GetMapping("/")
     private String index(){
-        return "index";
+        return "index.jsp";
     }
 
     @GetMapping("/test/userdata")
