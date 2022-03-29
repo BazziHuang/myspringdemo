@@ -15,12 +15,8 @@ public class UserdataController {
 
     @Autowired
     UserdataDao userdataDao;
-	
-	@GetMapping("/")
-    private String index(){
-        return "index";
-    }
 
+    //      --------------testing---------------
     @GetMapping("/test/userdata")
     @ResponseBody
     private List<Map<String, Object>> userdata(){
