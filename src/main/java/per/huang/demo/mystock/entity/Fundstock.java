@@ -1,47 +1,12 @@
 package per.huang.demo.mystock.entity;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-@Entity
-@Table(name = "fundstock")
-public class Fundstock implements Serializable{
-
-    @Column(name = "fundstock_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Id
-    private Integer id;
-
-    @Column(name = "fund_id")
-    @NotEmpty(message = "{fundstock.fid.empty}")
-    private Integer fund_id;
-
-    @Column(name = "fundstock_symbol")
-    @NotEmpty(message = "{fundstock.symbol.empty}")
-    private String symbol;
-
-    @Column(name = "fundstock_share")
-    @NotEmpty(message = "{fundstock.share.empty}")
-    @Min(value = 1000, message = "{fundstock.share.notenough}")
-    private Integer share;
-
+public class Fundstock {
     
-    @JsonIgnore
-    @ManyToOne(targetEntity = Fund.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "fund_id", insertable = false, updatable = false)
+    private Integer id;
+    private String name;
+    private Integer fund_id;
+    private String symbol;
+    private Integer share;
     private Fund fund; 
 
     public Integer getId() {
@@ -50,6 +15,14 @@ public class Fundstock implements Serializable{
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getFund_id() {
@@ -86,7 +59,8 @@ public class Fundstock implements Serializable{
 
     @Override
     public String toString() {
-        return "Fundstock [fund_id=" + fund_id + ", id=" + id + ", share=" + share + ", symbol=" + symbol + "]";
+        return "Fundstock [fund=" + fund + ", fund_id=" + fund_id + ", id=" + id + ", name=" + name + ", share=" + share
+                + ", symbol=" + symbol + "]";
     }
 
     

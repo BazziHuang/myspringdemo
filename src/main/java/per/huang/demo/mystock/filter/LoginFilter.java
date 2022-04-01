@@ -1,4 +1,4 @@
-package per.huang.demo.mystock.controller.filter;
+package per.huang.demo.mystock.filter;
 
 import java.io.IOException;
 

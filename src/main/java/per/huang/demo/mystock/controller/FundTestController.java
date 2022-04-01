@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import per.huang.demo.mystock.entity.Fund;
 import per.huang.demo.mystock.repository.FundDao;
-import per.huang.demo.mystock.service.FundService;
 
 import java.util.List;
 
@@ -16,19 +15,28 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/fund/test")
-public class FundController {
+public class FundTestController {
 
     @Autowired
-    FundDao fundDao;
+    FundDao<Fund> fundDao;
 
     @GetMapping("/alldata")
     public List<Fund> findAllData() {
-        return fundDao.findAll();
+        return fundDao.findAll().get();
+    }
+
+    @GetMapping("/offset/{offset}")
+    public List<Fund> QueryPage(@PathVariable Integer offset){
+        return fundDao.findDataWithLimit(offset, 5).get();
     }
 
     @GetMapping("/name/{name}")
     public Fund getFundByName(@PathVariable("name") String name){
-        return fundDao.findByName(name).orElse(null);
+        List<Fund> fund = fundDao.findByName(name).orElse(null);
+        if(fund.isEmpty()){
+            return null;
+        }
+        return fund.get(0);
     }
 
     @GetMapping("/id/{id}")
@@ -37,23 +45,33 @@ public class FundController {
     }
 
     @GetMapping("/insert/demo")
-    public Integer insertFundById(){
-        return fundDao.insertIntoFund("Shipping");
+    public Integer insertFund(){
+        return fundDao.insert(getAFund());
     }
 
-    @GetMapping("/update/demo1")
-    public Integer updateShareById1(){
-      return fundDao.updateFund(7, "Computer");
-    }
+    
 
     @GetMapping("/update/demo2")
-    public Integer updateShareById2(){
-      return fundDao.updateFund(7, "AI");
+    public Integer update(){
+        return fundDao.update(getAFund2());
     }
 
     @GetMapping("/delete/{id}")
     public Integer deleteFundById(@PathVariable("id") Integer id){
-        return fundDao.deleteFundById(id);
+        return fundDao.deleteById(id);
+    }
+
+    private Fund getAFund(){
+        Fund fund = new Fund();
+        fund.setName("ship");
+        return fund;
+    }
+
+    private Fund getAFund2(){
+        Fund fund = new Fund();
+        fund.setId(8);
+        fund.setName("plastic");
+        return fund;
     }
 
 

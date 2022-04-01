@@ -11,30 +11,33 @@ import per.huang.demo.mystock.exception.BadParameterException;
 import per.huang.demo.mystock.exception.DataNotFoundException;
 import per.huang.demo.mystock.exception.InvalidInputException;
 import per.huang.demo.mystock.repository.FundDao;
-import per.huang.demo.mystock.repository.FundstockDao;
 
 @Service
 public class FundstockServiceImpl implements FundService<Fundstock>{
 
     @Autowired
-    FundstockDao fundstockDao;
+    FundDao<Fundstock> fundstockDao;
     @Autowired
-    FundDao fundDao;
+    FundDao<Fund> fundDao;
 
     @Override
     public List<Fundstock> getAllData() {
-        return fundstockDao.findAll();
+        return fundstockDao.findAll().get();
     }
 
     @Override
     public List<Fundstock> getDataWithLimit(Integer offset, Integer limit){
-        if(offset == null || offset < 0 ){
-            throw new BadParameterException("offset can not be null or negative.","offset");
+        if(offset != null && offset < 0){
+            return getAllData();
+        }
+        if(offset == null){
+            throw new BadParameterException("offset can not be null.","offset");
         }
         if(limit == null || limit <= 0){
             throw new BadParameterException("limit can not be null or less than zero.","limit");
         }
-        return fundstockDao.findFundstocksWithLimit(offset, limit).orElse(null);
+        List<Fundstock> fundstocks = fundstockDao.findDataWithLimit(offset, limit).orElse(null);
+        return fundstocks;
     }
 
     @Override
@@ -48,7 +51,7 @@ public class FundstockServiceImpl implements FundService<Fundstock>{
 
     @Override
     public int getDataCount() {
-        return (int)fundstockDao.count();
+        return fundstockDao.count();
     }
 
     @Override
@@ -59,7 +62,7 @@ public class FundstockServiceImpl implements FundService<Fundstock>{
         if(fund_id==null || fundstock_symbol==null || fundstock_share==null){
             throw new InvalidInputException("input fundstock parameters can not be null.");
         }
-        return fundstockDao.insertIntoFundstock(fund_id, fundstock_symbol, fundstock_share);
+        return fundstockDao.insert(fundstock);
     }
 
     @Override
@@ -73,13 +76,13 @@ public class FundstockServiceImpl implements FundService<Fundstock>{
         if(fund_id==null || fundstock_symbol==null || fundstock_share==null){
             throw new InvalidInputException("input fundstock invalid.");
         }
-        return fundstockDao.updateFundstockById(fundstock_id, fund_id, fundstock_symbol, fundstock_share);
+        return fundstockDao.update(fundstock);
     }
 
     @Override
     public int deleteData(Integer fundstock_id) throws DataNotFoundException {
         fundstockDao.findById(fundstock_id).orElseThrow(() -> new DataNotFoundException("fundstock not found."));
-        return fundstockDao.deleteFundstockById(fundstock_id);
-    }
+        return fundstockDao.deleteById(fundstock_id);
+    } 
     
 }

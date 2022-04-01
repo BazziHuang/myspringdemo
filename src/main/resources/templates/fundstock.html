@@ -1,45 +1,134 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>基金</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <title>基金</title>
+    <link rel="stylesheet" th:href="@{/css/fund.css}">
+    <script type="text/javascript" th:src="@{/js/source/vue.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/source/jquery-3.6.0.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/button.js}"></script>
 </head>
-<body>
-    <!-- Form Part -->
-    <div style="height:20px;width:50%;"></div>
-        <h1>加入基金</h1>
-        <form action="#" th:action="@{/fund/fundstock/}" th:object="${fundstock}" th:method="${_method}">
-            <div class="form-group" style="width: 20%;">
-                <label for="name">序號</label>
-                <input type="text" th:field="*{id}" class="form-control" readonly="readonly">
 
-                <label for="name">代號</label>
-                <input type="text" th:field="*{symbol}" class="form-control">
-                <span class="fieldError" th:if="${#fields.hasErrors('*{symbol}')}" th:errors="*{symbol}"></span>
-
-                <label for="name">股數</label>
-                <input type="text" th:field="*{share}" class="form-control">
-                <span class="fieldError" th:if="${#fields.hasErrors('*{share}')}" th:errors="*{share}"></span>
-
-                <label for="name">基金</label>
-                <select th:field="*{fund}">
-                    <option value="">請選擇</option>
-                    <option th:each="fund : ${funds}" value="${fund.id}" th:text="${fund.name}"></option>
-                </select>
-            </div>
-            <button type="submit" class="btn-primary" th:if="${_method.equals('POST')}">新增</button>
-            <button type="submit" class="btn btn-light" th:unless="${_method.equals('POST')}" disabled>新增</button>
-            <button type="submit" class="btn-primary" th:if="${_method.equals('PUT')}">修改</button>
-            <button type="submit" class="btn btn-light" th:unless="${_method.equals('PUT')}" disabled>修改</button>
-            <button type="submit" class="btn-primary" th:if="${_method.equals('PUT')}">刪除</button>
-            <button type="submit" class="btn btn-light" th:unless="${_method.equals('PUT')}" disabled>刪除</button>
-            <div th:each="err : ${#fields.errors('*')}">
-                <span th:text="${err}" class="fieldError"></span>
-            </div>
-        </form>
-
-    <!-- List Part -->
+<body class="fundbody">
+    <table>
+        <tr>
+            <td valign="top">
+                <!-- Form Part -->
+                <div class="container my-2">
+                    <h1>加入基金</h1>
+                    <form action="#" id="fundstock_form" th:action="@{/fund/fundstock/}" 
+                        th:object="${fundstock}" th:method="${_method}">
+                        <div class="form-group">
+                            <label for="name">序號</label>
+                            <input type="text" th:field="*{id}" class="form-control" readonly="readonly">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">代號</label>
+                            <input type="text" th:field="*{symbol}" class="form-control" placeholder="請輸入股票代號">
+                            <span class="funderror" th:if="${#fields.hasErrors('*{symbol}')}"
+                                th:errors="*{symbol}"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">股數</label>
+                            <input type="text" th:field="*{share}" class="form-control" placeholder="請輸入股數">
+                            <span class="funderror" th:if="${#fields.hasErrors('*{share}')}"
+                                th:errors="*{share}"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">基金</label>
+                            <select th:field="*{fund_id}">
+                                <option value="">請選擇基金</option>
+                                <option th:each="fund : ${funds}" th:value="${fund.id}" th:text="${fund.name}"></option>
+                            </select>
+                            <span class="funderror" th:if="${#fields.hasErrors('*{fund_id}')}"
+                                th:errors="*{fund_id}"></span>
+                        </div>
+                        <!-- button here -->
+                        <button type="submit" class="btn btn-primary" th:if="${_method.equals('POST')}">新增</button>
+                        <button type="submit" class="btn btn-secondary" th:unless="${_method.equals('POST')}" disabled>新增</button>
+                        <button type="bottun" class="btn btn-primary" th:if="${_method.equals('PUT')}" 
+                            th:onclick="updataDataByIndex([[${fundstock.id}]],'fundstock_form',[[@{/fund/fundstock}]])">修改</button>
+                        <button type="bottun" class="btn btn-secondary" th:unless="${_method.equals('PUT')}"
+                            disabled>修改</button>
+                        <button type="bottun" class="btn btn-primary" th:if="${_method.equals('PUT')}" 
+                            th:onclick="deleteDataByIndex([[${fundstock.id}]],'fundstock_form',[[@{/fund/fundstock}]])">刪除</button>
+                        <button type="bottun" class="btn btn-secondary" th:unless="${_method.equals('PUT')}"
+                            disabled>刪除</button>
+                        
+                        <!-- errors message -->
+                        <div th:each="err : ${#fields.errors('*')}">
+                            <span th:text="${err}" class="fundinfo"></span>
+                        </div>
+                    </form>
+                </div>
+            </td>
+            <td valign="top">
+                <!-- List Part -->
+                <form>
+                    <fieldset>
+                        <legend>
+                            Fundstock List&nbsp;|&nbsp;
+                            <a th:href="@{/fund/fundstock/}">全部</a>
+                            <th:block th:each="page : ${#numbers.sequence(1, totalPage)}">
+                                &nbsp;|&nbsp;<a th:href="@{'/fund/fundstock/page/'+${page}}" th:text="${page}"></a>
+                            </th:block>
+                        </legend>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">序號</th>
+                                    <th scope="col">代號</th>
+                                    <th scope="col">股名</th>
+                                    <th scope="col">股數</th>
+                                    <th scope="col">基金</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <th:block th:each="fundstock : ${fundstocks}">
+                                    <tr>
+                                        <th scope="row" th:inline="text">
+                                            <a th:href="@{'/fund/fundstock/'+${fundstock.id}}">[[${fundstock.id}]]</a>
+                                        </th>
+                                        <td th:text="${fundstock.symbol}"></td>
+                                        <td th:text="${fundstock.name}"></td>
+                                        <td th:text="${fundstock.share}"></td>
+                                        <td th:text="${fundstock.fund.name}"></td>
+                                    </tr>
+                                </th:block>
+                            </tbody>
+                        </table>
+                    </fieldset>
+                </form>
+            </td>
+        </tr>
+    </table>
+    
+    <script>
+        /*
+        var form = new Vue(
+            {
+                el:'#form',
+                data:{
+                    isDisabled:false,
+                    buttonClass:'btn btn-primary'
+                },
+                methods:{
+                    getfundstock:function(){
+                        form.isDisabled=true;
+                        form.buttonClass='btn btn-secondary';
+                    },
+                    updatefundstock:function(index){
+                        document.getElementById('fundstock').action = "./"+index;
+                        document.getElementById(id).submit;
+                        isDisabled=false;
+                    }
+                }
+            }
+        );
+        */
+    </script>
 
 </body>
+
 </html>

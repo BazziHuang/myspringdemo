@@ -15,11 +15,11 @@ import per.huang.demo.mystock.repository.FundDao;
 public class FundServiceImpl implements FundService<Fund>{
 
     @Autowired
-    FundDao fundDao;
+    FundDao<Fund> fundDao;
 
     @Override
     public List<Fund> getAllData() {
-        return fundDao.findAll();
+        return fundDao.findAll().get();
     }
 
     @Override
@@ -30,7 +30,7 @@ public class FundServiceImpl implements FundService<Fund>{
         if(limit == null || limit <= 0){
             throw new BadParameterException("limit can not be null or less than zero.","limit");
         }
-        return fundDao.findFundsWithLimit(offset, limit).orElse(null);
+        return fundDao.findDataWithLimit(offset, limit).orElse(null);
     }
 
     @Override
@@ -44,20 +44,20 @@ public class FundServiceImpl implements FundService<Fund>{
 
     @Override
     public int getDataCount() {
-        return (int)fundDao.count();
+        return fundDao.count();
     }
 
     @Override
     public int addData(Fund fund){
         String fund_name = fund.getName();
-        Fund exsitingFund = fundDao.findByName(fund_name).orElse(null);
+        Fund exsitingFund = fundDao.findByName(fund_name).orElse(null).get(0);
         if(fund_name==null){
             throw new InvalidInputException("input fund_name can not be null.");
         }
         if(exsitingFund != null){
             throw new InvalidInputException("fund_name already exists.");
         }
-        return fundDao.insertIntoFund(fund_name);
+        return fundDao.insert(fund);
     }
 
     @Override
@@ -65,17 +65,17 @@ public class FundServiceImpl implements FundService<Fund>{
         Integer fund_id = fund.getId();
         String fund_name = fund.getName();
         fundDao.findById(fund_id).orElseThrow(() -> new  DataNotFoundException("fund not found."));
-        Fund exsitingFund = fundDao.findByName(fund_name).orElse(null);
+        Fund exsitingFund = fundDao.findByName(fund_name).orElse(null).get(0);
         if(exsitingFund != null){
             throw new InvalidInputException("fund_name already exists.");
         }
-        return fundDao.updateFund(fund_id, fund_name);
+        return fundDao.update(fund);
     }
 
     @Override
     public int deleteData(Integer fund_id){
         fundDao.findById(fund_id).orElseThrow(() -> new  DataNotFoundException("fund not found."));
-        return fundDao.deleteFundById(fund_id);
+        return fundDao.deleteById(fund_id);
     }
     
 }
