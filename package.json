@@ -1,0 +1,27 @@
+{
+  "name": "myspringdemo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BazziHuang/myspringdemo.git"
+  },
+  "author": "Benjamin Hunag",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BazziHuang/myspringdemo/issues"
+  },
+  "homepage": "https://github.com/BazziHuang/myspringdemo#readme",
+  "devDependencies": {
+    "eslint": "^8.12.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "fetch-inject": "^3.2.0",
+    "jquery": "^3.6.0"
+  }
+}

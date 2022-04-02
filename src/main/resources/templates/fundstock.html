@@ -5,20 +5,22 @@
     <meta charset="UTF-8">
     <title>基金</title>
     <link rel="stylesheet" th:href="@{/css/fund.css}">
-    <script type="text/javascript" th:src="@{/js/source/vue.min.js}"></script>
-    <script type="text/javascript" th:src="@{/js/source/jquery-3.6.0.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/button.js}"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script th:src="@{/js/source/util.js}"></script>
 </head>
 
 <body class="fundbody">
     <table>
         <tr>
+
             <td valign="top">
                 <!-- Form Part -->
                 <div class="container my-2">
                     <h1>加入基金</h1>
-                    <form action="#" id="fundstock_form" th:action="@{/fund/fundstock/}" 
-                        th:object="${fundstock}" th:method="${_method}">
+                    <form action="#" id="fundstock_form" th:action="@{/fund/fundstock/}" th:object="${fundstock}"
+                        th:method="${_method}">
                         <div class="form-group">
                             <label for="name">序號</label>
                             <input type="text" th:field="*{id}" class="form-control" readonly="readonly">
@@ -46,16 +48,17 @@
                         </div>
                         <!-- button here -->
                         <button type="submit" class="btn btn-primary" th:if="${_method.equals('POST')}">新增</button>
-                        <button type="submit" class="btn btn-secondary" th:unless="${_method.equals('POST')}" disabled>新增</button>
-                        <button type="bottun" class="btn btn-primary" th:if="${_method.equals('PUT')}" 
+                        <button type="submit" class="btn btn-secondary" th:unless="${_method.equals('POST')}"
+                            disabled>新增</button>
+                        <button type="bottun" class="btn btn-primary" th:if="${_method.equals('PUT')}"
                             th:onclick="updataDataByIndex([[${fundstock.id}]],'fundstock_form',[[@{/fund/fundstock}]])">修改</button>
                         <button type="bottun" class="btn btn-secondary" th:unless="${_method.equals('PUT')}"
                             disabled>修改</button>
-                        <button type="bottun" class="btn btn-primary" th:if="${_method.equals('PUT')}" 
+                        <button type="bottun" class="btn btn-primary" th:if="${_method.equals('PUT')}"
                             th:onclick="deleteDataByIndex([[${fundstock.id}]],'fundstock_form',[[@{/fund/fundstock}]])">刪除</button>
                         <button type="bottun" class="btn btn-secondary" th:unless="${_method.equals('PUT')}"
                             disabled>刪除</button>
-                        
+
                         <!-- errors message -->
                         <div th:each="err : ${#fields.errors('*')}">
                             <span th:text="${err}" class="fundinfo"></span>
@@ -63,9 +66,10 @@
                     </form>
                 </div>
             </td>
+
             <td valign="top">
                 <!-- List Part -->
-                <form>
+                <div class="container my-2">
                     <fieldset>
                         <legend>
                             Fundstock List&nbsp;|&nbsp;
@@ -99,35 +103,130 @@
                             </tbody>
                         </table>
                     </fieldset>
-                </form>
+                </div>
+            </td>
+            <!-- Chart part -->
+            <td>
+                <div class="container my-2">
+                    <fieldset>
+                        <legend>
+                            Fundstock Chart&nbsp;|&nbsp;
+                            <a href="#" th:onclick="drawChart(1)">bar</a>&nbsp;|&nbsp;
+                            <a href="#" th:onclick="drawChart(2)">pie</a>&nbsp;|&nbsp;
+                            <a href="#" th:onclick="drawChart(3)">column</a>&nbsp;|&nbsp;
+                            <a href="#" th:onclick="drawChart(4)">line</a>&nbsp;|&nbsp;
+                        </legend>
+                        <div id="piechart" style="width: 500px; height: 300px;"></div>
+                    </fieldset>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" valign="top">
+            <div class="container my-2">
+            <form>
+                <fieldset>
+                    <legend>
+                        Fundstock Chart | <a href="#" onclick="drawStockChart('^TWII')">加權股價</a>
+                    </legend>
+                    <div id="stockchart" style="width: 1500px; height: 500px;"></div>
+                </fieldset>
+            </form>
+            </div>
             </td>
         </tr>
     </table>
-    
-    <script>
-        /*
-        var form = new Vue(
-            {
-                el:'#form',
-                data:{
-                    isDisabled:false,
-                    buttonClass:'btn btn-primary'
+
+    <script type="text/javascript" th:inline="javascript">
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            drawChart(1);
+            drawStockChart('^TWII')
+        }
+
+        function drawStockChart(symbol) {
+            $.get("/fund/fundstock/price/historicalQuote/" + symbol, function (quotes, status) {
+                console.log("quotes", quotes);
+                console.log("status", status);
+                drawChatHist(symbol, quotes);
+            });
+        }
+
+        function drawChatHist(symbol, quotes) {
+            //建立 data 欄位
+            var data = new google.visualization.DataTable();
+            //定義欄位
+            data.addColumn('string', "Date");
+            data.addColumn('number', "High");
+            data.addColumn('number', "Open");
+            data.addColumn('number', "Close");
+            data.addColumn('number', "Low");
+            data.addColumn('number', "AdjClose");
+            data.addColumn('number', "Volumn");
+            //加入資料
+            $.each(quotes, function (i, item) {
+                var array = [getMD(quotes[i].date), quotes[i].high, quotes[i].open, quotes[i].close, quotes[i].low, quotes[i].adjClose, quotes[i].volume];
+                data.addRow(array);
+            });
+            console.log("data:" + data);
+            // 設定 chart 參數
+            var options = {
+                tittle: symbol + ' 日K線圖',
+                legend: 'none',
+                vAxes: [
+                    {},
+                    { minValue: 1, maxValue: 6000000 }
+                ],
+                series: {
+                    1: { targetAxisIndex: 0, type: 'line', color: '#e7711b' },
+                    2: { targetAxisIndex: 1, type: 'bars', color: '#cccccc' }
                 },
-                methods:{
-                    getfundstock:function(){
-                        form.isDisabled=true;
-                        form.buttonClass='btn btn-secondary';
-                    },
-                    updatefundstock:function(index){
-                        document.getElementById('fundstock').action = "./"+index;
-                        document.getElementById(id).submit;
-                        isDisabled=false;
-                    }
-                }
+                candlestick: {
+                    fallingColor: { strokeWidth: 0, fill: '#0f9d58' }, // green
+                    risingColor: { strokeWidth: 0, fill: '#a52714' }   // red
+                },
+                chartArea: { left: 50 }
+            };
+            var chart = new google.visualization.CandlestickChart(document.getElementById('stockchart'));
+            chart.draw(data, options);
+        }
+
+        function drawChart(chartId) {
+            var data = google.visualization.arrayToDataTable([
+                ['symbol', 'share'], 
+                /*<![CDATA[*/
+                /*[# th:each="map : ${groupMap}"]*/
+                [
+                /*[[${map.key}]]*/, /*[[${map.value}]]*/
+                ],
+                /*[/]*/
+                /*]]>*/
+            ]);
+
+            var options = {
+                tittle: 'stock info'
+            };
+
+            var chart = new google.visualization.BarChart(document.getElementById('piechart'));
+            switch (chartId) {
+                case 2:
+                    chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                    break;
+                case 3:
+                    chart = new google.visualization.ColumnChart(document.getElementById('piechart'));
+                    break;
+                case 4:
+                    chart = new google.visualization.LineChart(document.getElementById('piechart'));
+                    break;
             }
-        );
-        */
+
+            chart.draw(data, options);
+
+        }
     </script>
+
 
 </body>
 

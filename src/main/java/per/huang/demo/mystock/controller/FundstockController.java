@@ -1,9 +1,10 @@
 package per.huang.demo.mystock.controller;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
-import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -72,6 +73,7 @@ public class FundstockController {
         model.addAttribute("fundstocks", fundstocks);
         model.addAttribute("funds", funds);
         model.addAttribute("totalPage", totalPage);
+        model.addAttribute("groupMap", getGroupMap());
 
         return "fundstock";
     }
@@ -130,6 +132,11 @@ public class FundstockController {
         fundstockService.deleteData(id);
         putFlag = false;
         return "redirect:./page/" + pageNumber; 
+    }
+
+    private Map<String, Integer> getGroupMap(){
+        List<Fundstock> fundstocks = fundstockService.getAllData();
+        return fundstocks.stream().collect(Collectors.groupingBy(Fundstock::getSymbol, Collectors.summingInt(Fundstock::getShare)));
     }
 
     // rawdata test

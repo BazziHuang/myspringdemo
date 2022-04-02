@@ -1,7 +1,5 @@
 package per.huang.demo.mystock.component;
 
-import java.io.IOException;
-
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -40,6 +38,8 @@ public class FundstockValidator implements Validator {
                 errors.rejectValue("share", "fundstock.share.range");
             }
         } catch (Exception e) {
+            System.out.println("Exception occurs at FundstockValidator: ");
+            e.printStackTrace();
         }
     }
 
