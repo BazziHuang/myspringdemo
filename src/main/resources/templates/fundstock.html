@@ -3,12 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>基金</title>
+    <title>基金成分股</title>
     <link rel="stylesheet" th:href="@{/css/fund.css}">
+    <script th:src="@{/js/source/jquery.min.js}"></script>
+    <script th:src="@{/js/source/util.js}"></script>
     <script type="text/javascript" th:src="@{/js/button.js}"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script th:src="@{/js/source/util.js}"></script>
 </head>
 
 <body class="fundbody">
@@ -72,8 +72,7 @@
                 <div class="container my-2">
                     <fieldset>
                         <legend>
-                            Fundstock List&nbsp;|&nbsp;
-                            <a th:href="@{/fund/fundstock/}">全部</a>
+                            Fundstock List
                             <th:block th:each="page : ${#numbers.sequence(1, totalPage)}">
                                 &nbsp;|&nbsp;<a th:href="@{'/fund/fundstock/page/'+${page}}" th:text="${page}"></a>
                             </th:block>
@@ -106,7 +105,7 @@
                 </div>
             </td>
             <!-- Chart part -->
-            <td>
+            <td valign="top">
                 <div class="container my-2">
                     <fieldset>
                         <legend>
@@ -129,7 +128,7 @@
                     <legend>
                         Fundstock Chart | <a href="#" onclick="drawStockChart('^TWII')">加權股價</a>
                     </legend>
-                    <div id="stockchart" style="width: 1500px; height: 500px;"></div>
+                    <div id="stockchart" style="width: 1500px; height: 800px;"></div>
                 </fieldset>
             </form>
             </div>
@@ -176,18 +175,18 @@
                 tittle: symbol + ' 日K線圖',
                 legend: 'none',
                 vAxes: [
-                    {},
-                    { minValue: 1, maxValue: 6000000 }
+                    {},  //走勢線範圍
+                    { minValue: 1, maxValue: 6000000 }  //成交量範圍
                 ],
                 series: {
-                    1: { targetAxisIndex: 0, type: 'line', color: '#e7711b' },
-                    2: { targetAxisIndex: 1, type: 'bars', color: '#cccccc' }
+                    1: { targetAxisIndex: 0, type: 'line', color: '#e7711b' }, //走勢線
+                    2: { targetAxisIndex: 1, type: 'bars', color: '#cccccc' }  //成交量
                 },
-                candlestick: {
+                candlestick: {  //陰陽線
                     fallingColor: { strokeWidth: 0, fill: '#0f9d58' }, // green
                     risingColor: { strokeWidth: 0, fill: '#a52714' }   // red
                 },
-                chartArea: { left: 50 }
+                chartArea: { left: 100 } //左側留白
             };
             var chart = new google.visualization.CandlestickChart(document.getElementById('stockchart'));
             chart.draw(data, options);

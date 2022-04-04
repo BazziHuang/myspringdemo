@@ -36,15 +36,14 @@ public class FundstockController {
     @Autowired
     private FundstockValidator fundstockValidator;
 
-    private int pageNumber = -1;
-    private int offset = -1;
+    private int pageNumber = 1;
     private int totalPage = 0;
     private boolean putFlag = false;
     private boolean errorFlage = false;
 
     @GetMapping("/")
     public String index(@ModelAttribute Fundstock fundstock) {
-        pageNumber = -1;
+        pageNumber = 1; //here to adjust title page
         return "redirect:./page/" + pageNumber;
     }
 
@@ -59,7 +58,7 @@ public class FundstockController {
             errorFlage = false;
         }
         this.pageNumber = pageNumber;
-        offset = (pageNumber - 1) * FundService.LIMIT;
+        int offset = (pageNumber - 1) * FundService.LIMIT;
         int fundstocksCount = fundstockService.getDataCount();
         totalPage = fundstocksCount / FundService.LIMIT + (fundstocksCount % FundService.LIMIT == 0 ? 0 : 1);
 

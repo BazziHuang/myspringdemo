@@ -24,8 +24,11 @@ public class FundServiceImpl implements FundService<Fund>{
 
     @Override
     public List<Fund> getDataWithLimit(Integer offset, Integer limit){
-        if(offset == null || offset < 0 ){
-            throw new BadParameterException("offset can not be null or negative.","offset");
+        if(offset != null && offset < 0){
+            return getAllData();
+        }
+        if(offset == null){
+            throw new BadParameterException("offset can not be null.","offset");
         }
         if(limit == null || limit <= 0){
             throw new BadParameterException("limit can not be null or less than zero.","limit");
@@ -50,11 +53,11 @@ public class FundServiceImpl implements FundService<Fund>{
     @Override
     public int addData(Fund fund){
         String fund_name = fund.getName();
-        Fund exsitingFund = fundDao.findByName(fund_name).orElse(null).get(0);
+        List<Fund> exsitingFund = fundDao.findByName(fund_name).orElse(null);
         if(fund_name==null){
             throw new InvalidInputException("input fund_name can not be null.");
         }
-        if(exsitingFund != null){
+        if(exsitingFund != null && exsitingFund.size() > 0){
             throw new InvalidInputException("fund_name already exists.");
         }
         return fundDao.insert(fund);
@@ -65,8 +68,8 @@ public class FundServiceImpl implements FundService<Fund>{
         Integer fund_id = fund.getId();
         String fund_name = fund.getName();
         fundDao.findById(fund_id).orElseThrow(() -> new  DataNotFoundException("fund not found."));
-        Fund exsitingFund = fundDao.findByName(fund_name).orElse(null).get(0);
-        if(exsitingFund != null){
+        List<Fund> exsitingFund = fundDao.findByName(fund_name).orElse(null);
+        if(exsitingFund != null && exsitingFund.size() > 0){
             throw new InvalidInputException("fund_name already exists.");
         }
         return fundDao.update(fund);

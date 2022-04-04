@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"></html>
+<head>
+    <meta charset="UTF-8">
+    <title>基金</title>
+    <link rel="stylesheet" th:href="@{/css/fund.css}">
+    <script th:src="@{/js/source/jquery.min.js}"></script>
+    <script th:src="@{/js/source/util.js}"></script>
+    <script th:src="@{/js/source/jquery.validate.min.js}"></script>
+    <script th:src="@{/js/source/messages_zh_TW.min.js}"></script>
+    <script th:src="@{/js/fund.js}"></script>
+</head>
+
+<body class="fundbody">
+    <table>
+        <tr>
+            <!-- form part -->
+            <td valign="top">
+                <div class="container my-2">
+                <h1>基金</h1>
+                <form id="fundform">
+                    <div class="form group">
+                        <label for="name">基金序號</label>
+                        <input type="text" id="id" name="id" readonly="readonly">
+                    </div>
+                    <div class="form group">
+                        <label for="name">基金名稱</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="btn-group">
+                    <button type="button" id="add" class="btn btn-primary">新增</button>
+                    <button type="button" id="update" class="btn btn-primary" disabled>
+                        修改</button>
+                    <button type="button" id="delete" class="btn btn-primary" disabled>
+                        刪除</button>
+                    <button type="button" id="reset" class="btn btn-primary">重置</button>
+                    </div>
+                </form>
+                </div>
+            </td>
+            <!--List part-->
+            <td valign="top">
+                <div class="container my-2">
+                <fieldset>
+                    <legend>
+                        Fund List&nbsp;|&nbsp;
+							<!-- Homework 動態分頁處理 -->
+							<span class="mylink" onclick="queryPage(1);">1</span>&nbsp;|&nbsp;
+							<span class="mylink" onclick="queryPage(2);">2</span>&nbsp;|&nbsp;
+							<span class="mylink" onclick="queryPage(3);">3</span>
+                    </legend> 
+                    <table id="fundtable" class="table table-striped">
+                        <thead>
+                        <tr>
+                            <td>基金序號</td>
+                            <td>基金名稱</td>
+                            <td>建立日期</td>
+                            <td>成分股</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <!-- javascript handle-->
+                        </tbody>
+                    </table>
+                </fieldset>    
+                </div>
+            </td>
+        </tr>
+    </table>
+    
+</body>
+
+</html>
