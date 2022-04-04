@@ -1,3 +1,10 @@
+/*
+dependencie:
+jquery-3.6.0.min.js
+util.js
+jquery.validate.min.js
+messages_zh_TW.min.js
+*/
 
 $(function(){
     //驗證註冊
