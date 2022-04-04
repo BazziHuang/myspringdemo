@@ -95,7 +95,7 @@ public class FundDaoImpl implements FundDao<Fund> {
 
     @Override
     public int count() {
-        String sql = "SELECT count(*) FROM fund=";
+        String sql = "SELECT count(*) FROM fund";
         int count = jdbcTemplate.queryForObject(sql, Integer.class);
         return count;
     }

@@ -10,5 +10,10 @@ public class PathController {
     public String fund(){
         return "fund";
     }
+
+    @GetMapping("/")
+    public String fundstock(){
+        return "redirect:./fund/fundstock/";
+    }
     
 }

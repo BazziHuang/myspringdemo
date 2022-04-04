@@ -22,3 +22,7 @@
 .fundinfo{
 	color: #005100;
 }
+
+.fundlink {
+	cursor: pointer;
+}

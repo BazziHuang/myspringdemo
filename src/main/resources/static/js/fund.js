@@ -1,5 +1,5 @@
 /*
-dependencie:
+dependencies:
 jquery-3.6.0.min.js
 util.js
 jquery.validate.min.js
@@ -26,6 +26,7 @@ $(function(){
     });
     //Fund List 的資料列表
     table_list();
+    setPageLegend();
     //註冊相關事件
     $('#fundtable').on('click', 'tr', function(){  //tr指的是table的row, 點案就會呼喚getItem()
         getItem(this);
@@ -55,7 +56,7 @@ function queryPage(pageNumber) {
         console.log(status);
         $('#fundtable tbody > tr').remove();
         $.each(data, function(i, item){
-            var html = '<tr><td>{0}</td><td>{1}</td><td width="10%">{2}</td><td width="70%">{3}</td></tr>'; //共四個欄位 id, name, createtime, fundstocls
+            var html = '<tr><td>{0}</td><td>{1}</td><td width="12%">{2}</td><td width="65%">{3}</td></tr>'; //共四個欄位 id, name, createtime, fundstocls
             if(item.fundstocks != null){
             $('#fundtable').append(String.format(
                 html, item.id, item.name, item.createtime, Object.values(item.fundstocks)
@@ -67,6 +68,22 @@ function queryPage(pageNumber) {
                     );
             }
         });
+    });
+}
+
+function setPageLegend(){
+    var path = "/fund/fund/rawdata/totalPageCount";
+    $.get(path, function(data, status){
+        console.log('legend: '+data);
+        console.log('legend: '+status);
+        $('#fundtablelegend legend').remove();
+        var html = '<span class="text-primary" onclick="queryPage({0});">{1}</span>&nbsp;|&nbsp;';
+        for(var i=1;i<=data;i++){
+            console.log(i);
+            $('#fundtablelegend').append(String.format(
+                html, i, i
+            ));
+        }
     });
 }
 
@@ -143,7 +160,7 @@ function deleteItem(){
 }
 
 function table_list() {
-    queryPage(0);
+    queryPage(1);
 }
 
 function btnAttr(status){

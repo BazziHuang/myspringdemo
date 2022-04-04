@@ -5,13 +5,21 @@
     <meta charset="UTF-8">
     <title>基金成分股</title>
     <link rel="stylesheet" th:href="@{/css/fund.css}">
-    <script th:src="@{/js/source/jquery.min.js}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script th:src="@{/js/source/util.js}"></script>
     <script type="text/javascript" th:src="@{/js/button.js}"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 
 <body class="fundbody">
+    <ul class="nav justify-content-end">
+        <li class="nav-item">
+            <a class="nav-link active" th:href="@{/fund/fund/}">Fund</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" href="#">Fundstock</a>
+        </li>
+    </ul>
     <table>
         <tr>
 
@@ -113,7 +121,6 @@
                             <a href="#" th:onclick="drawChart(1)">bar</a>&nbsp;|&nbsp;
                             <a href="#" th:onclick="drawChart(2)">pie</a>&nbsp;|&nbsp;
                             <a href="#" th:onclick="drawChart(3)">column</a>&nbsp;|&nbsp;
-                            <a href="#" th:onclick="drawChart(4)">line</a>&nbsp;|&nbsp;
                         </legend>
                         <div id="piechart" style="width: 500px; height: 300px;"></div>
                     </fieldset>
@@ -126,7 +133,10 @@
             <form>
                 <fieldset>
                     <legend>
-                        Fundstock Chart | <a href="#" onclick="drawStockChart('^TWII')">加權股價</a>
+                        走勢圖&nbsp;|&nbsp;
+                        <a href="#" th:if="${fundstock.name}!=null" 
+                                  th:text="${fundstock.name}+'('+${fundstock.symbol}+')'"></a>
+                        <a href="#" th:unless="${fundstock.name}!=null">加權股價</a>
                     </legend>
                     <div id="stockchart" style="width: 1500px; height: 800px;"></div>
                 </fieldset>
@@ -139,13 +149,26 @@
     <script type="text/javascript" th:inline="javascript">
         google.charts.load('current', { 'packages': ['corechart'] });
         google.charts.setOnLoadCallback(drawChart);
+        $(function(){
+            /*<![CDATA[*/
+                /*[# th:if="${fundstock.symbol}==null"]*/
+                drawStockChart('^TWII');
+                /*[/]*/
+                /*[# th:unless="${fundstock.symbol}==null"]*/
+                drawStockChart(/*[[${fundstock.symbol}]]*/);
+                /*[/]*/
+                /*]]>*/
+        });
 
         function drawChart() {
             drawChart(1);
-            drawStockChart('^TWII')
+            drawStockChart('^TWII');
         }
 
         function drawStockChart(symbol) {
+            if(symbol == null){
+                symbol = '^TWII';
+            }
             $.get("/fund/fundstock/price/historicalQuote/" + symbol, function (quotes, status) {
                 console.log("quotes", quotes);
                 console.log("status", status);
@@ -175,8 +198,8 @@
                 tittle: symbol + ' 日K線圖',
                 legend: 'none',
                 vAxes: [
-                    {},  //走勢線範圍
-                    { minValue: 1, maxValue: 6000000 }  //成交量範圍
+                    { tittle: '股格'},  //走勢線範圍
+                    { tittle: '成交量', minValue: 1, maxValue: 6000000 }  //成交量範圍
                 ],
                 series: {
                     1: { targetAxisIndex: 0, type: 'line', color: '#e7711b' }, //走勢線
@@ -186,7 +209,7 @@
                     fallingColor: { strokeWidth: 0, fill: '#0f9d58' }, // green
                     risingColor: { strokeWidth: 0, fill: '#a52714' }   // red
                 },
-                chartArea: { left: 100 } //左側留白
+                chartArea: { left: 100, top: 20 } //左側留白
             };
             var chart = new google.visualization.CandlestickChart(document.getElementById('stockchart'));
             chart.draw(data, options);
@@ -215,9 +238,6 @@
                     break;
                 case 3:
                     chart = new google.visualization.ColumnChart(document.getElementById('piechart'));
-                    break;
-                case 4:
-                    chart = new google.visualization.LineChart(document.getElementById('piechart'));
                     break;
             }
 

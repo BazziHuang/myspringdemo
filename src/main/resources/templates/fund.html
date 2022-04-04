@@ -12,6 +12,14 @@
 </head>
 
 <body class="fundbody">
+    <ul class="nav justify-content-end">
+        <li class="nav-item">
+            <a class="nav-link disabled" href="#">Fund</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" th:href="@{/fund/fundstock/}">Fundstock</a>
+        </li>
+    </ul>
     <table>
         <tr>
             <!-- form part -->
@@ -27,6 +35,7 @@
                         <label for="name">基金名稱</label>
                         <input type="text" id="name" name="name" required>
                     </div>
+                    <p></p>
                     <div class="btn-group">
                     <button type="button" id="add" class="btn btn-primary">新增</button>
                     <button type="button" id="update" class="btn btn-primary" disabled>
@@ -42,12 +51,8 @@
             <td valign="top">
                 <div class="container my-2">
                 <fieldset>
-                    <legend>
-                        Fund List&nbsp;|&nbsp;
-							<!-- Homework 動態分頁處理 -->
-							<span class="mylink" onclick="queryPage(1);">1</span>&nbsp;|&nbsp;
-							<span class="mylink" onclick="queryPage(2);">2</span>&nbsp;|&nbsp;
-							<span class="mylink" onclick="queryPage(3);">3</span>
+                    <legend id="fundtablelegend">
+                        Fund List&nbsp;|
                     </legend> 
                     <table id="fundtable" class="table table-striped">
                         <thead>
