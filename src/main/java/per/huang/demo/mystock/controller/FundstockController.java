@@ -79,10 +79,11 @@ public class FundstockController {
         return "fundstock";
     }
 
-    @GetMapping("/reset")
-    public String reset(){
+    @PostMapping("/resetPage")
+    public String resetPage(){
+        System.out.println("resetPage...");
         putFlag = false;
-        return "redirect:./page/1";
+        return "redirect:./page/"+pageNumber;
     }
 
     @GetMapping("/{id}")
