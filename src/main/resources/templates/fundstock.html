@@ -66,7 +66,13 @@
                             th:onclick="deleteDataByIndex([[${fundstock.id}]],'fundstock_form',[[@{/fund/fundstock}]])">刪除</button>
                         <button type="bottun" class="btn btn-secondary" th:unless="${_method.equals('PUT')}"
                             disabled>刪除</button>
-
+                        <span th:if="${_method.equals('PUT')}">
+                            <a class="btn btn-primary" th:text="重置" th:href="@{/fund/fundstock/reset}"></a>
+                        </span>
+                        <span class="btn gray-button disable-links" th:unless="${_method.equals('PUT')}">
+                            <a th:text="重置" disabled="true"></a>
+                        </span>
+                        
                         <!-- errors message -->
                         <div th:each="err : ${#fields.errors('*')}">
                             <span th:text="${err}" class="fundinfo"></span>
@@ -158,6 +164,7 @@
                 drawStockChart(/*[[${fundstock.symbol}]]*/);
                 /*[/]*/
                 /*]]>*/
+    
         });
 
         function drawChart() {

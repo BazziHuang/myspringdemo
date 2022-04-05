@@ -64,17 +64,25 @@ public class FundstockController {
 
         List<Fundstock> fundstocks = fundstockService.getDataWithLimit(offset, FundService.LIMIT);
         List<Fund> funds = fundService.getAllData();
+        
         if(putFlag){
             model.addAttribute("_method", "PUT");
-        }else{
+        }else{ 
             model.addAttribute("_method", "POST");
         }
+       
         model.addAttribute("fundstocks", fundstocks);
         model.addAttribute("funds", funds);
         model.addAttribute("totalPage", totalPage);
         model.addAttribute("groupMap", getGroupMap());
 
         return "fundstock";
+    }
+
+    @GetMapping("/reset")
+    public String reset(){
+        putFlag = false;
+        return "redirect:./page/1";
     }
 
     @GetMapping("/{id}")

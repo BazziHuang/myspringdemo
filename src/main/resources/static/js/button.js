@@ -9,3 +9,8 @@ function deleteDataByIndex(index, id, path){
     method[0].value="DELETE";
     updataDataByIndex(index, id, path);
 }
+
+
+
+
+

@@ -167,5 +167,4 @@ function btnAttr(status){
     $('#fundform').find('#add').attr('disabled', status != 0);
     $('#fundform').find('#update').attr('disabled', status == 0);
     $('#fundform').find('#delete').attr('disabled', status == 0);
-
 }
