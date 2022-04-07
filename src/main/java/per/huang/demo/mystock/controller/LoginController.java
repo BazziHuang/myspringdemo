@@ -48,7 +48,7 @@ public class LoginController {
             model.addAttribute("userdata", userdata);
             return "login";
         }
-        session.setAttribute("user_name", userdata.getName());
+        //session.setAttribute("user_name", userdata.getName());
         return "redirect:../stock/fund/fundstock/";
         
     }
