@@ -1,4 +1,4 @@
-package per.huang.demo.mystock.component;
+package per.huang.demo.mystock.component.validator;
 
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

@@ -1,4 +1,4 @@
-package per.huang.demo.mystock.component;
+package per.huang.demo.mystock.component.validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

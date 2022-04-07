@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import per.huang.demo.mystock.component.FundstockValidator;
+import per.huang.demo.mystock.component.validator.FundstockValidator;
 import per.huang.demo.mystock.entity.Fund;
 import per.huang.demo.mystock.entity.Fundstock;
 import per.huang.demo.mystock.service.FundService;

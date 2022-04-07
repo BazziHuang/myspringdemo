@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import per.huang.demo.mystock.component.LoginValidator;
+import per.huang.demo.mystock.component.validator.LoginValidator;
 import per.huang.demo.mystock.entity.Userdata;
 import per.huang.demo.mystock.service.UserdataService;
 
@@ -49,6 +49,7 @@ public class LoginController {
             return "login";
         }
         session.setAttribute("user_name", userdata.getName());
+        session.setMaxInactiveInterval(60*30);
         return "redirect:../stock/fund/fundstock/";
         
     }
