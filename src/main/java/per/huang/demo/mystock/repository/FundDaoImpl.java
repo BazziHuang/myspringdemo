@@ -36,7 +36,7 @@ public class FundDaoImpl implements FundDao<Fund> {
         try {
             fund = jdbcTemplate.queryForObject(sql1, new BeanPropertyRowMapper<>(Fund.class), id);
         } catch (EmptyResultDataAccessException e) {
-
+            System.out.println("FundDaoImpl: fund not found!");
         }
         if (fund == null) {
             return Optional.empty();

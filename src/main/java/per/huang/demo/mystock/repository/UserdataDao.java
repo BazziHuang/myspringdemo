@@ -1,22 +1,23 @@
 package per.huang.demo.mystock.repository;
 
+
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public class UserdataDao {
+import per.huang.demo.mystock.entity.Userdata;
+
+public interface UserdataDao {
+
+	Optional<List<Userdata>> findAll();
+	Optional<Userdata> findById(int id);
+	Optional<Userdata> findByName(String name);
+	Optional<Userdata> findByEmail(String email);
+	int insert(Userdata userdata);
+	int update(Userdata userdata);
+	int updateLoginTime(int id, Date time);
+	int deleteById(int id);
     
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
-    public List<Map<String, Object>> queryAll() {
-		String query="SELECT user_id, user_name, user_email from userdata";
-		List<Map<String, Object>> user= jdbcTemplate.queryForList(query);
-		return user;
-	}
     
 }

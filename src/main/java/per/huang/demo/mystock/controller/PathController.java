@@ -6,14 +6,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class PathController {
 
-    @GetMapping("/fund/fund/")
+    @GetMapping("/stock/fund/")
     public String fund(){
         return "fund";
     }
+    
+    //@GetMapping("/fund/fundstock/")
+    public String fundstock(){
+        return "fundstock";
+    }
 
     @GetMapping("/")
-    public String fundstock(){
-        return "redirect:./fund/fundstock/";
+    public String index(){
+        return "redirect:./login/";
     }
     
 }

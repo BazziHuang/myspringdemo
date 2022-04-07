@@ -7,9 +7,8 @@ import org.springframework.stereotype.Service;
 
 import per.huang.demo.mystock.entity.Fund;
 import per.huang.demo.mystock.entity.Fundstock;
-import per.huang.demo.mystock.exception.BadParameterException;
-import per.huang.demo.mystock.exception.DataNotFoundException;
 import per.huang.demo.mystock.exception.InvalidInputException;
+import per.huang.demo.mystock.exception.DataNotFoundException;
 import per.huang.demo.mystock.repository.FundDao;
 
 @Service
@@ -31,10 +30,10 @@ public class FundstockServiceImpl implements FundService<Fundstock>{
             return getAllData();
         }
         if(offset == null){
-            throw new BadParameterException("offset can not be null.","offset");
+            throw new InvalidInputException("offset can not be null.", "offset");
         }
         if(limit == null || limit <= 0){
-            throw new BadParameterException("limit can not be null or less than zero.","limit");
+            throw new InvalidInputException("limit can not be null or less than zero.", "limit");
         }
         List<Fundstock> fundstocks = fundstockDao.findDataWithLimit(offset, limit).orElse(null);
         return fundstocks;
@@ -43,9 +42,9 @@ public class FundstockServiceImpl implements FundService<Fundstock>{
     @Override
     public Fundstock getDataById(Integer fundstock_id){
         if(fundstock_id == null || fundstock_id <= 0){
-            throw new BadParameterException("fundstock_id can not be null or less than zero.", "fundstock_id");
+            throw new InvalidInputException("fundstock_id can not be null or less than zero.", "fundstock_id");
         }
-        Fundstock fundstock = fundstockDao.findById(fundstock_id).orElseThrow(() -> new DataNotFoundException("fundstock_id not found."));
+        Fundstock fundstock = fundstockDao.findById(fundstock_id).orElseThrow(() -> new DataNotFoundException("fundstock_id not found.", "fundstock_id"));
         return fundstock;
     }
 
@@ -60,7 +59,7 @@ public class FundstockServiceImpl implements FundService<Fundstock>{
         String fundstock_symbol = fundstock.getSymbol();
         Integer fundstock_share = fundstock.getShare();
         if(fund_id==null || fundstock_symbol==null || fundstock_share==null){
-            throw new InvalidInputException("input fundstock parameters can not be null.");
+            throw new InvalidInputException("input fundstock parameters can not be null.", "fundstock");
         }
         return fundstockDao.insert(fundstock);
     }
@@ -71,17 +70,17 @@ public class FundstockServiceImpl implements FundService<Fundstock>{
         Integer fund_id = fundstock.getFund_id();
         String fundstock_symbol = fundstock.getSymbol();
         Integer fundstock_share = fundstock.getShare();
-        fundDao.findById(fund_id).orElseThrow(()->new DataNotFoundException("fund_id not found."));
-        fundstockDao.findById(fundstock_id).orElseThrow(() -> new  InvalidInputException("invalid fundstock_id, fundstock doesn't exist."));     
+        fundDao.findById(fund_id).orElseThrow(()->new InvalidInputException("invalid fund_id, fund doesn't exist.", "fund_id"));
+        fundstockDao.findById(fundstock_id).orElseThrow(() -> new  DataNotFoundException("fundstock_id not found.","fundstock_id"));     
         if(fund_id==null || fundstock_symbol==null || fundstock_share==null){
-            throw new InvalidInputException("input fundstock invalid.");
+            throw new InvalidInputException("input fundstock invalid.", "funstock");
         }
         return fundstockDao.update(fundstock);
     }
 
     @Override
     public int deleteData(Integer fundstock_id) throws DataNotFoundException {
-        fundstockDao.findById(fundstock_id).orElseThrow(() -> new DataNotFoundException("fundstock not found."));
+        fundstockDao.findById(fundstock_id).orElseThrow(() -> new DataNotFoundException("fundstock_id not found.", "fundstock_id"));
         return fundstockDao.deleteById(fundstock_id);
     } 
     

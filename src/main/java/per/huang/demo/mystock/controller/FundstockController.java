@@ -26,7 +26,7 @@ import per.huang.demo.mystock.entity.Fundstock;
 import per.huang.demo.mystock.service.FundService;
 
 @Controller
-@RequestMapping("fund/fundstock")
+@RequestMapping("stock/fund/fundstock")
 public class FundstockController {
 
     @Autowired
@@ -125,7 +125,8 @@ public class FundstockController {
         if(result.hasErrors()){
             attributes.addFlashAttribute("fundstock", fundstock);
             putFlag = true;
-            return "redirect: ./page/" + pageNumber;
+            errorFlage = true;
+            return "redirect:./page/" + pageNumber;
         }
         fundstockService.updateData(fundstock);
         putFlag = false;

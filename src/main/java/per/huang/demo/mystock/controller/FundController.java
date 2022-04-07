@@ -17,7 +17,7 @@ import per.huang.demo.mystock.entity.Fund;
 import per.huang.demo.mystock.service.FundService;
 
 @RestController
-@RequestMapping("fund/fund/rawdata")
+@RequestMapping("stock/fund/rawdata")
 public class FundController {
 
     @Autowired

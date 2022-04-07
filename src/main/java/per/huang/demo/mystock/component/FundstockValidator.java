@@ -13,7 +13,7 @@ public class FundstockValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return FundstockValidator.class.isAssignableFrom(clazz);
+        return Fundstock.class.isAssignableFrom(clazz);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class FundstockValidator implements Validator {
                 errors.rejectValue("symbol", "fundstock.symbol.notfound");
             }
             if(share < 1000){
-                errors.rejectValue("share", "fundstock.share.notenough");
+                errors.rejectValue("share", "fundstock.share.notenough", new Object[]{1000},"買進股數必須大於或等於1000股");
             }
             if (share != null && share % 1000 != 0) {
                 errors.rejectValue("share", "fundstock.share.range");

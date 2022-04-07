@@ -40,6 +40,7 @@ public class FundstockDaoImpl implements FundDao<Fundstock> {
         try {
             fundstock = jdbcTemplate.queryForObject(sql1, new BeanPropertyRowMapper<>(Fundstock.class), id);
         } catch (EmptyResultDataAccessException e) {
+            System.out.println("FundstockDaoImpl: fundstock not found!");
         }
         if (fundstock == null) {
             return Optional.empty();

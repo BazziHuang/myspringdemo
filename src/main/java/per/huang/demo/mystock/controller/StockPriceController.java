@@ -14,7 +14,7 @@ import yahoofinance.histquotes.HistoricalQuote;
 import yahoofinance.histquotes.Interval;
 
 @RestController
-@RequestMapping("fund/fundstock/price")
+@RequestMapping("stock/fund/fundstock/price")
 public class StockPriceController {
 
     @GetMapping("/historicalQuote/{symbol:.+}")

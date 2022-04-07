@@ -14,7 +14,7 @@
 <body class="fundbody">
     <ul class="nav justify-content-end">
         <li class="nav-item">
-            <a class="nav-link active" th:href="@{/fund/fund/}">Fund</a>
+            <a class="nav-link active" th:href="@{/stock/fund/}">Fund</a>
         </li>
         <li class="nav-item">
             <a class="nav-link disabled" href="#">Fundstock</a>
@@ -27,7 +27,7 @@
                 <!-- Form Part -->
                 <div class="container my-2">
                     <h1>加入基金</h1>
-                    <form action="#" id="fundstock_form" th:action="@{/fund/fundstock/}" th:object="${fundstock}"
+                    <form action="#" id="fundstock_form" th:action="@{/stock/fund/fundstock/}" th:object="${fundstock}"
                         th:method="${_method}">
                         <div class="form-group">
                             <label for="name">序號</label>
@@ -59,15 +59,15 @@
                         <button type="submit" class="btn btn-secondary" th:unless="${_method.equals('POST')}"
                             disabled>新增</button>
                         <button type="bottun" class="btn btn-primary" th:if="${_method.equals('PUT')}"
-                            th:onclick="updataDataByIndex([[${fundstock.id}]],'fundstock_form',[[@{/fund/fundstock}]])">修改</button>
+                            th:onclick="updataDataByIndex([[${fundstock.id}]],'fundstock_form',[[@{/stock/fund/fundstock}]])">修改</button>
                         <button type="bottun" class="btn btn-secondary" th:unless="${_method.equals('PUT')}"
                             disabled>修改</button>
                         <button type="bottun" class="btn btn-primary" th:if="${_method.equals('PUT')}"
-                            th:onclick="deleteDataByIndex([[${fundstock.id}]],'fundstock_form',[[@{/fund/fundstock}]])">刪除</button>
+                            th:onclick="deleteDataByIndex([[${fundstock.id}]],'fundstock_form',[[@{/stock/fund/fundstock}]])">刪除</button>
                         <button type="bottun" class="btn btn-secondary" th:unless="${_method.equals('PUT')}"
                             disabled>刪除</button>
                         <button type="bottun" class="btn btn-primary" th:if="${_method.equals('PUT')}"
-                        th:onclick="resetPage([[${fundstock.id}]],'fundstock_form',[[@{/fund/fundstock}]])">重置</button>
+                        th:onclick="resetPage([[${fundstock.id}]],'fundstock_form',[[@{/stock/fund/fundstock}]])">重置</button>
                         <button type="bottun" class="btn btn-secondary" th:unless="${_method.equals('PUT')}"
                             disabled>重置</button>
                         <div th:each="err : ${#fields.errors('*')}">
@@ -84,7 +84,7 @@
                         <legend>
                             Fundstock List
                             <th:block th:each="page : ${#numbers.sequence(1, totalPage)}">
-                                &nbsp;|&nbsp;<a th:href="@{'/fund/fundstock/page/'+${page}}" th:text="${page}"></a>
+                                &nbsp;|&nbsp;<a th:href="@{'/stock/fund/fundstock/page/'+${page}}" th:text="${page}"></a>
                             </th:block>
                         </legend>
                         <table class="table table-striped">
@@ -101,7 +101,7 @@
                                 <th:block th:each="fundstock : ${fundstocks}">
                                     <tr>
                                         <th scope="row" th:inline="text">
-                                            <a th:href="@{'/fund/fundstock/'+${fundstock.id}}">[[${fundstock.id}]]</a>
+                                            <a th:href="@{'/stock/fund/fundstock/'+${fundstock.id}}">[[${fundstock.id}]]</a>
                                         </th>
                                         <td th:text="${fundstock.symbol}"></td>
                                         <td th:text="${fundstock.name}"></td>
@@ -172,9 +172,9 @@
             if(symbol == null){
                 symbol = '^TWII';
             }
-            $.get("/fund/fundstock/price/historicalQuote/" + symbol, function (quotes, status) {
-                console.log("quotes", quotes);
-                console.log("status", status);
+            $.get("/stock/fund/fundstock/price/historicalQuote/" + symbol, function (quotes, status) {
+                //console.log("quotes", quotes);
+                //console.log("status", status);
                 drawChatHist(symbol, quotes);
             });
         }
@@ -195,7 +195,7 @@
                 var array = [getMD(quotes[i].date), quotes[i].high, quotes[i].open, quotes[i].close, quotes[i].low, quotes[i].adjClose, quotes[i].volume];
                 data.addRow(array);
             });
-            console.log("data:" + data);
+            //console.log("data:" + data);
             // 設定 chart 參數
             var options = {
                 tittle: symbol + ' 日K線圖',
