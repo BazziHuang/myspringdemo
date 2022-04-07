@@ -29,7 +29,7 @@ public class LoginValidator implements Validator{
         String password = userdata.getPassword();
         ValidationUtils.rejectIfEmpty(errors, "name", "userdata.name.empty");
         ValidationUtils.rejectIfEmpty(errors, "password", "userdata.password.empty");
-        if(name.isBlank() || name.isBlank()){
+        if(name.trim().isEmpty() || name.trim().isEmpty()){
             return;
         }
         try{
