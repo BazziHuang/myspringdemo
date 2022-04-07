@@ -56,7 +56,7 @@ function queryPage(pageNumber) {
         //console.log(status);
         $('#fundtable tbody > tr').remove();
         $.each(data, function (i, item) {
-            var html = '<tr><td>{0}</td><td>{1}</td><td width="12%">{2}</td><td width="65%">{3}</td></tr>'; //共四個欄位 id, name, createtime, fundstocls
+            var html = '<tr><td><a href="#" onclick="getData({0})">{0}</a</td><td>{1}</td><td width="12%">{2}</td><td width="65%">{3}</td></tr>'; //共四個欄位 id, name, createtime, fundstocls
             if (item.fundstocks != null) {
                 $('#fundtable').append(String.format(
                     html, item.id, item.name, item.createtime, Object.values(item.fundstocks)
@@ -77,7 +77,7 @@ function setPageLegend() {
         //console.log('legend: ' + data);
         //console.log('legend: ' + status);
         $('#fundtablelegend legend').remove();
-        var html = '<span class="text-primary" onclick="queryPage({0});">{1}</span>&nbsp;|&nbsp;';
+        var html = '<a class="text-primary" href="#" onclick="queryPage({0});">{1}</a>&nbsp;|&nbsp;';
         for (var i = 1; i <= data; i++) {
             //console.log(i);
             $('#fundtablelegend').append(String.format(
@@ -87,6 +87,23 @@ function setPageLegend() {
     });
 }
 
+function getData(fid) {
+    var path = '/stock/fund/rawdata/' + parseInt(fid);
+    var func = function (fund, status) {  //fund  =>  從path拿到的data
+        //console.log(fund);
+        //將data注入到form
+        $('#fundform').find('#id').val(fund.id);
+        $('#fundform').find('#name').val(fund.name);
+        btnAttr(1);
+        //console.log(fund.fundstocks.length);
+        /*
+        if(fund.fundstocks.length > 0){
+            $('#fundform').find('#delete').attr('disabled',true);
+        }
+        */
+    }
+    $.get(path, func);   // *****執行
+}
 
 function getItem(elem) {
     var fid = $(elem).find('td').eq(0).text().trim(); //呼喚<td>{0}</td>的內容  此處為fund_id
