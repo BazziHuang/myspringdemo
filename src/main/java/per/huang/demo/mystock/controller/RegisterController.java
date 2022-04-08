@@ -73,7 +73,8 @@ public class RegisterController {
         // 寄出認證信
         String email = userdata.getEmail();
         String subject = "myspringdemo網頁認證信";
-        String path = request.getHeader("Host");
+        //String path = request.getHeader("Host");
+        String path = "https://" + request.getHeader("Host");
         path += "/login/register/validate/" + hashcode;
         String message = "請點擊以下連結通過驗證: " + path;
         mailService.prepareAndSend(email, subject, message);

@@ -35,3 +35,4 @@ build/
 sql/
 node_modules/
 .env
+src/main/java/per/huang/demo/mystock/test/
