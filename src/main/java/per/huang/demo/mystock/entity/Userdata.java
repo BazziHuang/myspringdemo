@@ -12,6 +12,7 @@ public class Userdata {
 	private String name;
 	private String email;
 	private String password;
+	private String checkpassword;
 	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private Date createtime;
@@ -41,6 +42,12 @@ public class Userdata {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public String getCheckpassword() {
+		return checkpassword;
+	}
+	public void setCheckpassword(String checkpassword) {
+		this.checkpassword = checkpassword;
 	}
 	public Date getCreatetime() {
 		return createtime;

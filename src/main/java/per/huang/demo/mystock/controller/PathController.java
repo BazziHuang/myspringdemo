@@ -20,5 +20,10 @@ public class PathController {
     public String index(){
         return "redirect:./login/";
     }
+
+    @GetMapping("/wrong")
+    public String success() {
+        return "wrong";
+    }
     
 }

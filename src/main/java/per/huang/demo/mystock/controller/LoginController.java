@@ -1,6 +1,5 @@
 package per.huang.demo.mystock.controller;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 

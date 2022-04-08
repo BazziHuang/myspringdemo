@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>登入</title>
@@ -20,7 +20,7 @@
                 <input type="password" th:field="*{password}" class="form-control" id="password" placeholder="Enter password">
                 <span class="loginerror" th:if="${#fields.hasErrors('*{password}')}" th:errors="*{password}"></span>
             </div>
-            <a href="#">忘記密碼</a>&nbsp;|&nbsp;<a href="#">註冊帳號</a> <p></p>
+            <a href="#">忘記密碼</a>&nbsp;|&nbsp;<a th:href="@{/login/register/}">註冊帳號</a> <p></p>
             <p>測試帳號:admin 電子郵件:admin@gmail.com 密碼:admin2022</p>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>

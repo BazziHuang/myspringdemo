@@ -15,28 +15,27 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LoginFilter implements Filter{
+public class RegisterFilter implements Filter{
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
             throws IOException, ServletException {
             HttpServletRequest request = (HttpServletRequest)req;
             HttpServletResponse response = (HttpServletResponse)resp;
-            Object session = request.getSession().getAttribute("user_name");
-            //System.out.println("session..."+session);
+            Boolean session = (Boolean)request.getSession().getAttribute("register_success");
             if(session==null){
-                request.getRequestDispatcher("/login/").forward(request, response);
+                request.getRequestDispatcher("/wrong").forward(request, response);
                 return;
             }
         chain.doFilter(request, response);
     }
 
     @Bean
-    public FilterRegistrationBean<LoginFilter> loginFilterRegistration(){
-        FilterRegistrationBean<LoginFilter> registrationBean =
+    public FilterRegistrationBean<RegisterFilter> registerFilterRegistration(){
+        FilterRegistrationBean<RegisterFilter> registrationBean =
             new FilterRegistrationBean<>();
-        registrationBean.setFilter(new LoginFilter());
-        registrationBean.addUrlPatterns("/stock/*");
+        registrationBean.setFilter(new RegisterFilter());
+        registrationBean.addUrlPatterns("/login/register/validate/*");
         registrationBean.setOrder(1);
         return registrationBean;
     }
