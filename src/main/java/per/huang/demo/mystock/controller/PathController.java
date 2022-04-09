@@ -1,7 +1,10 @@
 package per.huang.demo.mystock.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class PathController {
@@ -24,6 +27,15 @@ public class PathController {
     @GetMapping("/wrong")
     public String success() {
         return "wrong";
+    }
+
+    @GetMapping("/stock/logout")
+    @ResponseBody
+    public void logout(
+        HttpSession session
+    ){
+        System.out.println("logout...");
+        session.removeAttribute("user_name");
     }
     
 }

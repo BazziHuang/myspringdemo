@@ -105,6 +105,21 @@ function getData(fid) {
     $.get(path, func);   // *****執行
 }
 
+function logout(){
+    console.log('logout');
+    $.get('/stock/logout',function(){
+        alert('已成功登出，將回到登入頁面');
+        window.location.href="/login/";
+    });
+    /*
+    $(function(){
+        alert('已成功登出，將回到登入頁面');
+        sessionStorage.clear();
+        window.location.href="/login/";
+    });
+    */
+}
+
 function getItem(elem) {
     var fid = $(elem).find('td').eq(0).text().trim(); //呼喚<td>{0}</td>的內容  此處為fund_id
     console.log(fid);

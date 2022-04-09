@@ -17,5 +17,13 @@ function resetPage(index, id, path){
     location.href= path+"/resetPage";
 }
 
+function logout(){
+    console.log('logout');
+    $.get('/stock/logout',function(){
+        alert('已成功登出，將回到登入頁面');
+        window.location.href="/login/";
+    });
+}
+
 
 
