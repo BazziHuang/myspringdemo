@@ -38,15 +38,9 @@ public class RegisterValidator implements Validator {
                 || checkpassword.trim().isEmpty()) {
             return;
         }
-        if (!passwordCheck(password)) {
-            errors.rejectValue("password", "userdata.password.invalid");
-        }
-        if (password.trim().length() < 8 || password.trim().length() > 50) {
-            errors.rejectValue("password", "userdata.password.length", new Object[] { 8, 50 }, "輸入密碼長度必須介於8~50之間");
-        }
-        if (!password.equals(checkpassword)) {
-            errors.rejectValue("checkpassword", "userdata.checkpassword.wrong");
-        }
+        
+        passwordValidate(password, checkpassword, errors);
+
         if (!usernameCheck(name)) {
             errors.rejectValue("name", "userdata.name.invalid");
         }
@@ -72,6 +66,18 @@ public class RegisterValidator implements Validator {
 
     }
 
+    void passwordValidate(String password, String checkpassword, Errors errors){
+        if (!passwordCheck(password)) {
+            errors.rejectValue("password", "userdata.password.invalid");
+        }
+        if (password.trim().length() < 8 || password.trim().length() > 50) {
+            errors.rejectValue("password", "userdata.password.length", new Object[] { 8, 50 }, "輸入密碼長度必須介於8~50之間");
+        }
+        if (!password.equals(checkpassword)) {
+            errors.rejectValue("checkpassword", "userdata.checkpassword.wrong");
+        }
+    }
+
     private boolean usernameCheck(String input) {
         return input.matches("[\\p{Alpha}]+");
     }
@@ -83,5 +89,7 @@ public class RegisterValidator implements Validator {
             return false;
         }
     }
+
+   
 
 }

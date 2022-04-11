@@ -59,9 +59,9 @@ public class RegisterController {
         // 產生隨機碼
         Faker faker = Faker.instance();
         hashcode = faker.random().hex(12);
-        System.out.println(hashcode);
         // 建立session防止多次註冊
         Integer register_count = (Integer) session.getAttribute("register_count");
+        System.out.println("register_count: " + register_count );
         if (register_count == null) {
             session.setAttribute("register_count", 1);
         } else if (register_count > 3) {

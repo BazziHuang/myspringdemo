@@ -19,6 +19,7 @@ public class FundDaoImpl implements FundDao<Fund> {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
+    
 
     @Override
     public Optional<List<Fund>> findAll() {
@@ -28,7 +29,7 @@ public class FundDaoImpl implements FundDao<Fund> {
         Optional<List<Fund>> optional = Optional.of(jdbcTemplate.query(sql, resultSetExtractor));
         return optional;
     }
-
+    
     @Override
     public Optional<Fund> findById(Integer id) {
         String sql1 = "SELECT f.fund_id AS id, f.fund_name AS name, f.createtime AS createtime FROM fund f WHERE f.fund_id = ?";
@@ -41,22 +42,20 @@ public class FundDaoImpl implements FundDao<Fund> {
         if (fund == null) {
             return Optional.empty();
         }
-        System.out.println(fund.getName());
         String sql2 = "SELECT s.fundstock_id AS id, s.fund_id AS fund_id, s.fundstock_symbol AS symbol, s.fundstock_share AS share, d.stockdata_name AS name FROM fundstock s LEFT OUTER JOIN stockdata d ON s.fundstock_symbol = d.stockdata_symbol WHERE s.fund_id = ?";
         List<Fundstock> fundstocks = jdbcTemplate.query(sql2, new BeanPropertyRowMapper<>(Fundstock.class), fund.getId());
         fund.setFundstocks(fundstocks);
         return Optional.of(fund);
     }
-
+    
     @Override
     public Optional<List<Fund>> findByName(String name) {
-        String sql = "SELECT f.fund_id AS id, f.fund_name AS name, f.createtime AS createtime, s.fundstock_id AS fundstocks_id, d.stockdata_name AS fundstocks_name, s.fund_id AS fundstocks_fund_id, s.fundstock_symbol AS fundstocks_symbol, s.fundstock_share AS fundstocks_share FROM fund f LEFT OUTER JOIN fundstock s ON f.fund_id = s.fund_id LEFT OUTER JOIN stockdata d ON s.fundstock_symbol = d.stockdata_symbol ";
-        sql += String.format("WHERE f.fund_name = \'%s\'", name);
-        ResultSetExtractor<List<Fund>> resultSetExtractor = JdbcTemplateMapperFactory.newInstance().addKeys("id")
-                .newResultSetExtractor(Fund.class);
-        Optional<List<Fund>> optional = Optional.of(jdbcTemplate.query(sql, resultSetExtractor));
+        String sql = "SELECT f.fund_id AS id, f.fund_name AS name, f.createtime AS createtime, s.fundstock_id AS fundstocks_id, d.stockdata_name AS fundstocks_name, s.fund_id AS fundstocks_fund_id, s.fundstock_symbol AS fundstocks_symbol, s.fundstock_share AS fundstocks_share FROM fund f LEFT OUTER JOIN fundstock s ON f.fund_id = s.fund_id LEFT OUTER JOIN stockdata d ON s.fundstock_symbol = d.stockdata_symbol WHERE f.fund_name = ?";
+        Optional<List<Fund>> optional = Optional.of(jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(Fund.class), name));
         return optional;
     }
+    
+    
 
     @Override
     public Integer insert(Fund fund) {
@@ -64,6 +63,8 @@ public class FundDaoImpl implements FundDao<Fund> {
         int rowcount = jdbcTemplate.update(sql, fund.getName());
         return rowcount;
     }
+    
+
 
     @Override
     public Integer deleteById(Integer id) {

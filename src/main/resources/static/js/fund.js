@@ -28,7 +28,7 @@ $(function () {
     table_list();
     setPageLegend();
     //註冊相關事件
-    $('#fundtable').on('click', 'tr', function () {  //tr指的是table的row, 點案就會呼喚getItem()
+    $('#fundtable').on('click', 'tr', function () {  //tr指的是table的row, 點按就會呼喚getItem()
         getItem(this);
     });
     $('#add').on('click', function () {

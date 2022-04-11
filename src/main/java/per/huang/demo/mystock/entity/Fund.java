@@ -1,5 +1,6 @@
 package per.huang.demo.mystock.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-public class Fund {
+public class Fund implements Serializable{
 
     private Integer id;
     private String name;

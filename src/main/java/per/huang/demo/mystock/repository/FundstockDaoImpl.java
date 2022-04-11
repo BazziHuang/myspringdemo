@@ -60,12 +60,8 @@ public class FundstockDaoImpl implements FundDao<Fundstock> {
         } else {
             option = "d.stockdata_name";
         }
-        String sql = "SELECT s.fundstock_id AS id, d.stockdata_name AS name, s.fund_id AS fund_id, s.fundstock_symbol AS symbol, s.fundstock_share AS share, f.fund_id AS fund_id, f.fund_name AS fund_name, f.createtime AS fund_createtime FROM fundstock s LEFT OUTER JOIN stockdata d ON s.fundstock_symbol = d.stockdata_symbol LEFT OUTER JOIN fund f ON s.fund_id = f.fund_id ";
-        sql += String.format("WHERE %s = \'%s\'", option, name);
-        ResultSetExtractor<List<Fundstock>> resultSetExtractor = JdbcTemplateMapperFactory.newInstance()
-                .addKeys("id")
-                .newResultSetExtractor(Fundstock.class);
-        Optional<List<Fundstock>> optional = Optional.of(jdbcTemplate.query(sql, resultSetExtractor));
+        String sql = String.format("SELECT s.fundstock_id AS id, d.stockdata_name AS name, s.fund_id AS fund_id, s.fundstock_symbol AS symbol, s.fundstock_share AS share, f.fund_id AS fund_id, f.fund_name AS fund_name, f.createtime AS fund_createtime FROM fundstock s LEFT OUTER JOIN stockdata d ON s.fundstock_symbol = d.stockdata_symbol LEFT OUTER JOIN fund f ON s.fund_id = f.fund_id WHERE %s = ?", option);
+        Optional<List<Fundstock>> optional = Optional.of(jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Fundstock.class), name));
         return optional;
     }
 

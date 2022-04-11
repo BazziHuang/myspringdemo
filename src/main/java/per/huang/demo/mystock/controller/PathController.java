@@ -34,7 +34,6 @@ public class PathController {
     public void logout(
         HttpSession session
     ){
-        System.out.println("logout...");
         session.removeAttribute("user_name");
     }
     

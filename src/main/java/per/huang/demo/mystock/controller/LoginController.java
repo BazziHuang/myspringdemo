@@ -24,6 +24,8 @@ public class LoginController {
     UserdataService userdataService;
     @Autowired
     LoginValidator loginValidator;
+    @Autowired
+    HttpSession session;
 
 
     @GetMapping("/")
@@ -39,7 +41,6 @@ public class LoginController {
     private String login(
         @Valid @ModelAttribute Userdata userdata,
         BindingResult result,
-        HttpSession session,
         Model model
     ) {
         loginValidator.validate(userdata, result);
