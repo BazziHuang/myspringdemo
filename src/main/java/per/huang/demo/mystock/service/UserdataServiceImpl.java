@@ -114,10 +114,11 @@ public class UserdataServiceImpl implements UserdataService {
     }
 
     @Override
-    public int updateLoginTime(Integer id) {
-        userdataDao.findById(id).orElseThrow(() -> new DataNotFoundException("user_id not found.", "user_id"));
+    public int updateLoginTime(String name) {
+        userdataDao.findByName(name)
+                    .orElseThrow(() -> new DataNotFoundException("user_name not found.", "user_name"));
         Date time = new Date();
-        return userdataDao.updateLoginTime(id, time);
+        return userdataDao.updateLoginTime(name, time);
     }
 
     @Override

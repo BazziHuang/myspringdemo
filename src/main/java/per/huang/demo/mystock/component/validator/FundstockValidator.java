@@ -26,7 +26,11 @@ public class FundstockValidator implements Validator {
 
         yahoofinance.Stock yStock = null;
         try {
-            yStock = YahooFinance.get(fundstock.getSymbol());
+            String symbol = fundstock.getSymbol();
+            if(!symbol.contains(".TW")){
+                symbol+=".TW";
+            }
+            yStock = YahooFinance.get(symbol);
             Integer share = fundstock.getShare();
             if (fundstock.getSymbol() != null && yStock == null) {
                 errors.rejectValue("symbol", "fundstock.symbol.notfound");

@@ -16,7 +16,7 @@ public interface UserdataDao {
 	Optional<Userdata> findByEmail(String email);
 	int insert(Userdata userdata);
 	int update(Userdata userdata);
-	int updateLoginTime(int id, Date time);
+	int updateLoginTime(String name, Date time);
 	int deleteById(int id);
     
     

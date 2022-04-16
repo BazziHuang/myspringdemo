@@ -13,7 +13,7 @@ public interface UserdataService {
     String getEmail(String name);
     int addData(Userdata userdata);
     int updateData(Userdata userdata);
-    int updateLoginTime(Integer id);
+    int updateLoginTime(String name);
     int deleteData(Integer id);
     
 }

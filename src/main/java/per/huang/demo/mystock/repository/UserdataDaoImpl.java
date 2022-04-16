@@ -87,9 +87,9 @@ public class UserdataDaoImpl implements UserdataDao{
     }
 
     @Override
-    public int updateLoginTime(int id, Date time) {
-        String sql = "UPDATE userdata SET last_login=? WHERE user_id=?";
-        return jdbcTemplate.update(sql, time, id);
+    public int updateLoginTime(String name, Date time) {
+        String sql = "UPDATE userdata SET last_login=? WHERE user_name=?";
+        return jdbcTemplate.update(sql, time, name);
     }
 
     @Override

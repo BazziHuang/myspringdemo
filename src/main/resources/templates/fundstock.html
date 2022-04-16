@@ -45,7 +45,8 @@
                         </div>
                         <div class="form-group">
                             <label for="name">代號</label>
-                            <input type="text" th:field="*{symbol}" class="form-control" placeholder="請輸入股票代號">
+                            <input type="text" th:field="*{symbol}" class="form-control" aria-describedby="symbolhint" placeholder="請輸入股票代號">
+                            <small id="symbolhint" class="form-text text-muted">請輸入台股代號(不支援美股)</small>
                             <span class="funderror" th:if="${#fields.hasErrors('*{symbol}')}"
                                 th:errors="*{symbol}"></span>
                         </div>

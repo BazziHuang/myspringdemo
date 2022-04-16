@@ -61,6 +61,10 @@ public class FundstockServiceImpl implements FundService<Fundstock>{
         if(fund_id==null || fundstock_symbol==null || fundstock_share==null){
             throw new InvalidInputException("input fundstock parameters can not be null.", "fundstock");
         }
+        if(!fundstock_symbol.contains(".TW")){
+            fundstock_symbol+=".TW";
+        }
+        fundstock.setSymbol(fundstock_symbol);
         return fundstockDao.insert(fundstock);
     }
 

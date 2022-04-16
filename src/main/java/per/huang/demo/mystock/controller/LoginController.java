@@ -48,6 +48,7 @@ public class LoginController {
             model.addAttribute("userdata", userdata);
             return "login";
         }
+        userdataService.updateLoginTime(userdata.getName());
         session.setAttribute("user_name", userdata.getName());
         session.setMaxInactiveInterval(60*30);
         return "redirect:../stock/fund/fundstock/";
